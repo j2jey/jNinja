@@ -1,6 +1,8 @@
-$question = document.getElementById("question");
-$feedback = document.getElementById("feedback");
-$score = document.getElementById("score");
+var $question = document.getElementById("question");
+var $feedback = document.getElementById("feedback");
+var $score = document.getElementById("score");
+var $form = document.getElementById("answer");
+var $start = document.getElementById("start");
 
 function update(element, content, klass){
   var p = element.firstChild || document.createElement("p");
@@ -28,24 +30,59 @@ quiz = {
 
 var score = 0;
 //play(quiz);
+update($score,score);
+hide($form);
+show($start);
 
-var $start = document.getElementById("start");
 $start.addEventListener("click",function(){play(quiz)},false);
 
+function hide(element){
+  element.style.display = "none";
+}
+
+function show(element){
+  element.style.display = "block";
+}
+
+
+
+console.log(quiz.question+quiz.questions[0].question);
 function play(quiz){
-  update($score,score);
+  show($form);
+  hide($start);
+
+  $form.addEventListener('submit', function(event){
+    event.preventDefault();
+    check($form[0].value);
+    //console.log($form[0].value);
+  },false);
+
+
+  /*
   for(var i=0, question, answer, max=quiz.questions.length; i<max; i++)
   {
     question = quiz.questions[i].question;
     answer = ask(question);
     check(answer);
   }
-  gameOver();
+  */
 
+  var i=0;
+  chooseQuestion();
+
+  function chooseQuestion(){
+    var question = quiz.questions[i].question;
+    ask(question);
+  }
+
+
+  //gameOver();
 
   function ask(question){
     update($question,quiz.question+question);
-    return prompt("What is your answer: ");
+    $form[0].value="";
+    $form[0].focus();
+    //return prompt("What is your answer: ");
   }
 
   function check(answer){
@@ -55,14 +92,26 @@ function play(quiz){
       score++;
       update($score,score);
     }else{
-      alert("Wrong");
+      //alert("Wrong");
       update($feedback, "Wrong","wrong");
+    }
+
+    i++;
+    if(i===quiz.questions.length){
+      console.log(i);
+      gameOver();
+    }else{
+      chooseQuestion();
     }
   }
 
 
   function gameOver(){
-    update($feedback,"Game over. Score is "+score+".");
+    update($question,"Game over. Score is "+score+".");
+    update($score,score);
+    hide($form);
+    show($start);
     //alert("Thanks for playing. \nYour score is: "+score);
   }
+
 }

@@ -33,7 +33,7 @@ section p {
   color: #600;
 }
 
-button{
+input, button{
   font:bold 24px/150% Arial, Helvetica, sans-serif;
   display: block;
   width: 300px;
@@ -43,4 +43,15 @@ button{
 
 .highlight{
   background-color: red;
+}
+
+body{
+  width:400px;
+  margin: 0 auto;
+  background: #fff;
+  height: 100vh;
+}
+
+html{
+  background:#444;
 }
