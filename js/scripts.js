@@ -84,10 +84,17 @@ function play(quiz){
    check($form[0].value);
  })
 
+<<<<<<< HEAD
 
  var i = 0;
  chooseQuestion();
 
+=======
+
+ var i = 0;
+ chooseQuestion();
+
+>>>>>>> master
  function chooseQuestion(){
    var question = quiz.questions[i].question;
    ask(question);
