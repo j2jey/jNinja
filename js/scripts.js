@@ -1,9 +1,10 @@
 var $question = document.getElementById("question");
 var $feedback = document.getElementById("feedback");
 var $score = document.getElementById("score");
-var $form = document.getElementById("answer");
 var $start = document.getElementById("start");
-
+var $form = document.getElementById("answer");
+var $timer = document.getElementById("timer");
+//woohoo
 function update(element, content, klass){
   var p = element.firstChild || document.createElement("p");
   p.textContent = content
@@ -29,10 +30,14 @@ quiz = {
 //alert(quiz.description);
 
 var score = 0;
+var time = 20;
+
+
+
+
 //play(quiz);
-update($score,score);
-hide($form);
-show($start);
+
+
 
 $start.addEventListener("click",function(){play(quiz)},false);
 
@@ -44,18 +49,24 @@ function show(element){
   element.style.display = "block";
 }
 
+hide($form);
+show($start);
 
-
-console.log(quiz.question+quiz.questions[0].question);
 function play(quiz){
+
+  update($score,score);
+  update($timer,time)
   show($form);
   hide($start);
+  var interval = window.setInterval(countDown, 1000);
+    function countDown(){
+      time--;
+      update($timer, time);
+      if(time<=0){
+        gaveOver();
+      }
+    }
 
-  $form.addEventListener('submit', function(event){
-    event.preventDefault();
-    check($form[0].value);
-    //console.log($form[0].value);
-  },false);
 
 
   /*
@@ -65,23 +76,25 @@ function play(quiz){
     answer = ask(question);
     check(answer);
   }
-  */
+  gameOver();
+ */
 
-  var i=0;
-  chooseQuestion();
-
-  function chooseQuestion(){
-    var question = quiz.questions[i].question;
-    ask(question);
-  }
+ $form.addEventListener("submit",function(event){
+   event.preventDefault();
+   check($form[0].value);
+ })
 
 
-  //gameOver();
+ var i = 0;
+ chooseQuestion();
+
+ function chooseQuestion(){
+   var question = quiz.questions[i].question;
+   ask(question);
+ }
 
   function ask(question){
     update($question,quiz.question+question);
-    $form[0].value="";
-    $form[0].focus();
     //return prompt("What is your answer: ");
   }
 
@@ -97,21 +110,23 @@ function play(quiz){
     }
 
     i++;
-    if(i===quiz.questions.length){
-      console.log(i);
+    if(i==quiz.questions.length){
       gameOver();
     }else{
       chooseQuestion();
     }
+
   }
 
 
   function gameOver(){
+    window.clearInterval(interval);
     update($question,"Game over. Score is "+score+".");
     update($score,score);
+
     hide($form);
     show($start);
+
     //alert("Thanks for playing. \nYour score is: "+score);
   }
-
 }
